@@ -1,0 +1,38 @@
+[
+    {
+        "nome": "Gabriel",
+        "materia": "INF1039",
+        "media": 8.0,
+        "situacao": "Aprovado"
+    },
+    {
+        "nome": "Gabriel 1",
+        "materia": "INF1039",
+        "media": 5.0,
+        "situacao": "Não Aprovado"
+    },
+    {
+        "nome": "Abel",
+        "materia": "INF1039",
+        "media": 5.0,
+        "situacao": "Não Aprovado"
+    },
+    {
+        "nome": "a",
+        "materia": "INF1039",
+        "media": 5.0,
+        "situacao": "Não Aprovado"
+    },
+    {
+        "nome": "Gabriel",
+        "materia": "INF1039",
+        "media": 5.0,
+        "situacao": "Não Aprovado"
+    },
+    {
+        "nome": "Gabriel Lourenço",
+        "materia": "INF1039",
+        "media": 5.0,
+        "situacao": "Não Aprovado"
+    }
+]
