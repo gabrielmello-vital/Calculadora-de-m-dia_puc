@@ -15,8 +15,9 @@ class studentView:
     def information_students(self):
         st.header("Novo Cadastro")
         nome = st.text_input("Nome do Aluno")
+        matricula = st.text_input("Digite sua matrícula")
         codigo = st.text_input("Código da Disciplina (Ex: INF1039)")
-        return nome, codigo
+        return nome, matricula,codigo
 
     def pedir_notas(self, lista_de_notas):
         notas_digitadas = []

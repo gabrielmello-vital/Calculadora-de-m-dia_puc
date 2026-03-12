@@ -11,9 +11,13 @@ opcao = view.render_menu()
 
 
 if opcao == "Cadastrar Aluno":
-    nome, codigo = view.information_students()
+    nome, matricula, codigo = view.information_students()
     
-    if codigo:
+
+    if not codigo:
+        st.info("Digite o código da disciplina para começar o lançamento de notas.")
+
+    elif codigo:
         metodo = model.disciplinasCriterios.get(codigo.upper())
         if metodo:
             nome_criterio = metodo.__name__
@@ -36,24 +40,30 @@ if opcao == "Cadastrar Aluno":
             
 
             if st.button("Salvar no Sistema"):
-                media_final = model.saveAlunos(nome, codigo.upper(), n1, n2, n3, n4)
+                media_final = model.saveAlunos(nome, matricula, codigo.upper(), n1, n2, n3, n4)
                 st.success(f"Cadastro realizado! Média Final: {media_final:.2f}")
     else:
         st.error("Disciplina não cadastrada.")
 
-elif opcao == "Relatório":
-    st.header("Alunos Cadastrados")
-    dados = model.get_all()
 
+elif opcao == "Relatório":
+    st.header("Relatório de Alunos")
+    dados = model.get_all() # 
     if dados:
-        df = pd.DataFrame(dados)
-        st.subheader("Relatório de Alunos")
-        st.dataframe(
-            df,
-            column_config={
-                "media": st.column_config.NumberColumn("Média", format="%.2f"),
-                "nome": "Nome do Aluno",
-                "situacao": "Status Final"
-            })
+     
+        df = pd.DataFrame(list(dados.values()))
+
+       
+        st.dataframe(df, use_container_width=True, hide_index=True)
+
+        st.divider()
+        st.subheader("Área de Exclusão")
+        
+        matricula_alvo = st.selectbox("Selecione a matrícula para remover:", df['matricula'])
+        
+        if st.button("Remover Aluno", type="primary"):
+            model.delete_aluno(matricula_alvo)
+            st.success(f"Aluno {matricula_alvo} excluído!")
+            st.rerun()
     else:
-        st.warning("Nenhum dado encontrado no arquivo JSON.")
+        st.info("Ainda não há alunos cadastrados.")

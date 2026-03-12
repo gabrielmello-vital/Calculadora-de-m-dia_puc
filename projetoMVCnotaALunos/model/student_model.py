@@ -33,7 +33,7 @@ class studentModel(metaclass=SingletonMeta):
     
     def LoadFromJson(self):
         if not os.path.exists(self.file_path):
-            return []
+            return {}
         with open(self.file_path, "r", encoding="utf-8") as file:
             return json.load(file)
         
@@ -42,7 +42,7 @@ class studentModel(metaclass=SingletonMeta):
             json.dump(self.lista_Alunos, file, indent=4, ensure_ascii=False)
 
     
-    def saveAlunos(self, name, codD, n1, n2, n3=None, n4=None):
+    def saveAlunos(self, name, matricula,codD, n1, n2, n3=None, n4=None):
     
         funcao_calculo = self.disciplinasCriterios.get(codD)
         
@@ -57,16 +57,27 @@ class studentModel(metaclass=SingletonMeta):
             situacao = "Não Aprovado"
 
         aluno = {
-            "nome": name, 
+            "nome": name,
+            "matricula":matricula,
             "materia": codD,
             "media": media, 
             "situacao": situacao
         }
 
-        self.lista_Alunos.append(aluno)
+        self.lista_Alunos[matricula] = aluno
         self.save_to_json()
-        return media
 
+        return media
+    
+    def delete_aluno(self,matricula):
+        if matricula in self.lista_Alunos:
+            del self.lista_Alunos[matricula] 
+            self.save_to_json()
+            return True
+        return False
+              
+        
+    
     def criterio05(self,n1,n2,n3,n4=None):  
 
         nf = (n1 +n2 +n3)/3
