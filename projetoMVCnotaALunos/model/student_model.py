@@ -55,7 +55,8 @@ class studentModel(metaclass=SingletonMeta):
             situacao = "Aprovado" 
         else:
             situacao = "Não Aprovado"
-
+        if len(matricula) > 7:
+            raise ValueError (f"Erro: A matricula '{matricula}'não é valida")
         aluno = {
             "nome": name,
             "matricula":matricula,
