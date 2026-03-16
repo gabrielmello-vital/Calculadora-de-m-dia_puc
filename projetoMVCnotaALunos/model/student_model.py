@@ -1,6 +1,7 @@
 import json
 import os
 import threading
+import streamlit as st
 
 
 class SingletonMeta(type):
@@ -64,19 +65,21 @@ class studentModel(metaclass=SingletonMeta):
             "media": media, 
             "situacao": situacao
         }
+        chave_composta = f"{matricula}_{codD}"
 
-        self.lista_Alunos[matricula] = aluno
+        self.lista_Alunos[chave_composta] = aluno
         self.save_to_json()
 
         return media
     
-    def delete_aluno(self,matricula):
-        if matricula in self.lista_Alunos:
-            del self.lista_Alunos[matricula] 
+    def delete_aluno(self, chave_composta): 
+        if chave_composta in self.lista_Alunos:
+            del self.lista_Alunos[chave_composta] 
             self.save_to_json()
             return True
         return False
-              
+
+                   
         
     
     def criterio05(self,n1,n2,n3,n4=None):  
