@@ -1,0 +1,23 @@
+{
+    "293920_INF1039": {
+        "nome": "Gabriel",
+        "matricula": "293920",
+        "materia": "INF1039",
+        "media": 10.0,
+        "situacao": "Aprovado"
+    },
+    "2210456_INF1039": {
+        "nome": "Gabriel Mello",
+        "matricula": "2210456",
+        "materia": "INF1039",
+        "media": 8.833333333333334,
+        "situacao": "Aprovado"
+    },
+    "130_INF1039": {
+        "nome": "Lucas",
+        "matricula": "130",
+        "materia": "INF1039",
+        "media": 8.833333333333334,
+        "situacao": "Aprovado"
+    }
+}

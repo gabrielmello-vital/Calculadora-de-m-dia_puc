@@ -1,8 +1,6 @@
 import json
 import os
 import threading
-import streamlit as st
-
 
 class SingletonMeta(type):
     _instances = {}
@@ -12,66 +10,67 @@ class SingletonMeta(type):
         if cls not in cls._instances:
             with cls._lock:
                 if cls._instances.get(cls) is None:
-                
                     instance = super().__call__(*args, **kwargs)
                     cls._instances[cls] = instance
         return cls._instances[cls]
 
-
-
-
 class studentModel(metaclass=SingletonMeta):
+    
     def __init__(self):
-        self.file_path = "alunos.json" 
+    
+        base_path = os.path.dirname(os.path.abspath(__file__))
+        self.file_path = os.path.join(base_path, "alunos.json") 
+        
         self.lista_Alunos = self.LoadFromJson()
-        self.disciplinasCriterios = {'MAT4161':self.criterio08, 
-                                     'INF1039': self.criterio02, 
-                                     'CRE1227':self.criterio05, 
-                                     'INF1403':self.criterio02, 
-                                     'MAT4200': self.criterio04,
-                                     'INF1039':self.criterio02}
-       
+        self.disciplinasCriterios = {
+            'MAT4161': self.criterio08, 
+            'INF1039': self.criterio02, 
+            'CRE1227': self.criterio05, 
+            'INF1403': self.criterio02, 
+            'MAT4200': self.criterio04
+        }
     
     def LoadFromJson(self):
         if not os.path.exists(self.file_path):
             return {}
-        with open(self.file_path, "r", encoding="utf-8") as file:
-            return json.load(file)
+        try:
+            with open(self.file_path, "r", encoding="utf-8") as file:
+                return json.load(file)
+        except (json.JSONDecodeError, ValueError):
+            return {} 
         
     def save_to_json(self):
         with open(self.file_path, "w", encoding="utf-8") as file:
             json.dump(self.lista_Alunos, file, indent=4, ensure_ascii=False)
 
-    
-    def saveAlunos(self, name, matricula,codD, n1, n2, n3=None, n4=None):
-    
+    def saveAlunos(self, name, matricula, codD, n1, n2, n3=None, n4=None):
         funcao_calculo = self.disciplinasCriterios.get(codD)
         
-        if funcao_calculo:
+        if not funcao_calculo:
+             raise ValueError(f"Erro: A disciplina '{codD}' não possui critério.")
+
         
-            media = funcao_calculo(n1, n2, n3, n4)
-        else:
-             raise ValueError(f"Erro: A disciplina '{codD}' não possui um critério de avaliação cadastrado.")
-        if media >= 6.0:
-            situacao = "Aprovado" 
-        else:
-            situacao = "Não Aprovado"
+        media = funcao_calculo(n1, n2, n3, n4)
+        
+        situacao = "Aprovado" if media >= 6.0 else "Não Aprovado"
+        
         if len(matricula) > 7:
-            raise ValueError (f"Erro: A matricula '{matricula}'não é valida")
+            raise ValueError(f"Erro: A matricula '{matricula}' não é válida")
+
         aluno = {
             "nome": name,
-            "matricula":matricula,
+            "matricula": matricula,
             "materia": codD,
-            "media": media, 
+            "media": media,
             "situacao": situacao
         }
+        
         chave_composta = f"{matricula}_{codD}"
-
         self.lista_Alunos[chave_composta] = aluno
         self.save_to_json()
 
-        return media
-    
+        return media 
+
     def delete_aluno(self, chave_composta): 
         if chave_composta in self.lista_Alunos:
             del self.lista_Alunos[chave_composta] 
@@ -79,8 +78,10 @@ class studentModel(metaclass=SingletonMeta):
             return True
         return False
 
-                   
-        
+    def get_all(self):
+        return self.lista_Alunos
+
+
     
     def criterio05(self,n1,n2,n3,n4=None):  
 
@@ -137,8 +138,5 @@ class studentModel(metaclass=SingletonMeta):
 
 
 
-
-    def get_all(self):
-        return self.lista_Alunos
 
         
