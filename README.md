@@ -1,5 +1,5 @@
-Calculadora de Médias PUC
-Sistema voltado para o calculo das disciplinas especificas da Puc-Rio.
+#Calculadora de Médias PUC
+##Sistema voltado para o calculo das disciplinas especificas da Puc-Rio.
 
 📌 Objetivo
 Repositório criado com o intuito de mostrar um projeto simples utilizando a arquitetura MVC e o padrão Singleton, visando reforçar os estudos sobre padrões de projeto e organização de código.
